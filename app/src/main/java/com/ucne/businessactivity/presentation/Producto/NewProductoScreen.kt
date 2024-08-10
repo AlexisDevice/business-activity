@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.Notification
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -42,10 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import com.ucne.businessactivity.CaptureActivityPortrait
-import com.ucne.businessactivity.data.local.entities.ProductoEntity
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProductoScreen(
     viewModel: NewProductoViewModel = hiltViewModel(),
@@ -84,12 +81,12 @@ fun ProductRegistrationForm(
     onProductPrice: (Double) -> Unit,
     onProductStock: (Int) -> Unit,
 ){
-    var productID by remember { mutableStateOf<Int?>(null) }
-    var productCode by remember { mutableStateOf<String?>(null) }
-    var productName by remember { mutableStateOf<String?>(null) }
-    var productDescription by remember { mutableStateOf<String?>(null) }
+    var productID by remember { mutableStateOf<Int?>(0) }
+    var productCode by remember { mutableStateOf<String?>("") }
+    var productName by remember { mutableStateOf<String?>("") }
+    var productDescription by remember { mutableStateOf<String?>("") }
     var productPrice by remember { mutableStateOf<Double?>(0.0) }
-    var productStock by remember { mutableStateOf<Int?>(null) }
+    var productStock by remember { mutableStateOf<Int?>(0) }
     var mostrarToast by remember { mutableStateOf(false) }
 
 
@@ -126,7 +123,7 @@ fun ProductRegistrationForm(
             Spacer(modifier = Modifier.size(100.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 OutlinedTextField(
-                    value = uiState.productCode ?: "",
+                    value = productCode.toString(),
                     onValueChange = onProductCode,
                     label = { Text("Product Code") },
                     modifier = Modifier.weight(1f),
@@ -149,21 +146,21 @@ fun ProductRegistrationForm(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = uiState.productName ?: "",
+                value = productName.toString(),
                 onValueChange = onProductName,
                 label = { Text("Product Name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = uiState.productDescription ?: "",
+                value = productDescription.toString(),
                 onValueChange = onProductDescription,
                 label = { Text("Product Description") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = uiState.productPrice.toString() ?: "",
+                value = productPrice.toString(),
                 onValueChange = {value ->
                     value.trim().toDoubleOrNull()?.let { onProductPrice(it) }
                 },
@@ -173,7 +170,7 @@ fun ProductRegistrationForm(
             )
 
             OutlinedTextField(
-                value = uiState.productStock.toString() ?: "",
+                value = productStock.toString(),
                 onValueChange = { value ->
                     value.trim().toIntOrNull()?.let { onProductStock(it) }
                                 

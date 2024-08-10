@@ -112,7 +112,7 @@ class NewProductoViewModel @Inject constructor(
 
 data class ProductoUiState(
     val productID: Int? = null,
-    val productCode: String = "",
+    var productCode: String = "",
     val productName: String = "",
     val productDescription: String = "",
     val productPrice: Double? = 0.0,
