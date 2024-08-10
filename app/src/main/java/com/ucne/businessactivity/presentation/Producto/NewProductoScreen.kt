@@ -82,11 +82,11 @@ fun ProductRegistrationForm(
     onProductStock: (Int) -> Unit,
 ){
     var productID by remember { mutableStateOf<Int?>(0) }
-    var productCode by remember { mutableStateOf<String?>("") }
-    var productName by remember { mutableStateOf<String?>("") }
-    var productDescription by remember { mutableStateOf<String?>("") }
-    var productPrice by remember { mutableStateOf<Double?>(0.0) }
-    var productStock by remember { mutableStateOf<Int?>(0) }
+    var productCode by remember { mutableStateOf(uiState.productCode ?: "") }
+    var productName by remember { mutableStateOf(uiState.productName ?: "") }
+    var productDescription by remember { mutableStateOf(uiState.productDescription ?: "") }
+    var productPrice by remember { mutableStateOf(uiState.productPrice ?: 0.0) }
+    var productStock by remember { mutableStateOf(uiState.productStock ?: 0) }
     var mostrarToast by remember { mutableStateOf(false) }
 
 
@@ -123,8 +123,11 @@ fun ProductRegistrationForm(
             Spacer(modifier = Modifier.size(100.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 OutlinedTextField(
-                    value = productCode.toString(),
-                    onValueChange = onProductCode,
+                    value = productCode,
+                    onValueChange = {
+                        productCode = it
+                        onProductCode(it)
+                    },
                     label = { Text("Product Code") },
                     modifier = Modifier.weight(1f),
                 )
@@ -137,8 +140,8 @@ fun ProductRegistrationForm(
                         scanOptions.setOrientationLocked(false)
                         scanLauncher.launch(scanOptions)
                     },
-                    modifier = Modifier.size(48.dp), // Botón cuadrado de 48x48 dp
-                    contentPadding = PaddingValues(5.dp), // Sin relleno
+                    modifier = Modifier.size(48.dp),
+                    contentPadding = PaddingValues(5.dp),
                     colors = ButtonDefaults.buttonColors(Color.LightGray)
                 ) {}
             }
@@ -146,23 +149,32 @@ fun ProductRegistrationForm(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = productName.toString(),
-                onValueChange = onProductName,
+                value = productName,
+                onValueChange = {
+                    productName = it
+                    onProductName(it)
+                },
                 label = { Text("Product Name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = productDescription.toString(),
-                onValueChange = onProductDescription,
+                value = productDescription,
+                onValueChange = {
+                    productDescription = it
+                    onProductDescription(it)
+                },
                 label = { Text("Product Description") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = productPrice.toString(),
-                onValueChange = {value ->
-                    value.trim().toDoubleOrNull()?.let { onProductPrice(it) }
+                onValueChange = { value ->
+                    value.trim().toDoubleOrNull()?.let {
+                        productPrice = it
+                        onProductPrice(it)
+                    }
                 },
                 label = { Text("Product Price") },
                 modifier = Modifier.fillMaxWidth(),
@@ -172,9 +184,11 @@ fun ProductRegistrationForm(
             OutlinedTextField(
                 value = productStock.toString(),
                 onValueChange = { value ->
-                    value.trim().toIntOrNull()?.let { onProductStock(it) }
-                                
-                                },
+                    value.trim().toIntOrNull()?.let {
+                        productStock = it
+                        onProductStock(it)
+                    }
+                },
                 label = { Text("Product Stock") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
