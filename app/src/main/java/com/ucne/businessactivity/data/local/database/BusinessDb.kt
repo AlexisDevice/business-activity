@@ -12,7 +12,7 @@ import com.ucne.businessactivity.data.local.entities.ProductoEntity
         ProductoEntity::class,
         CategoryEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class BusinessDb : RoomDatabase() {

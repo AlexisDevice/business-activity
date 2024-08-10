@@ -19,9 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    goToHome : () -> Unit
+) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -58,7 +61,10 @@ fun LoginScreen() {
         )
 
         Button(
-            onClick = {},
+            onClick = {
+                if(username == "admin" && password == "admin") {
+                    goToHome()
+                } },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
